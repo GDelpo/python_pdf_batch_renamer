@@ -2,7 +2,9 @@ import logging
 import os
 import re
 import tkinter as tk
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from typing import ClassVar
+
 from tkinter import filedialog, messagebox, simpledialog, ttk
 
 from excel_parser import generate_formatted_names, load_excel_dataframe
@@ -27,8 +29,7 @@ logger = logging.getLogger(__name__)
 class ApplicationDefaults:
     EXCEL: str = "No file selected"
     DIRECTORY: str = "No folder selected"
-    VALID_EXTENSIONS: set = field(default_factory=lambda: {".xls", ".xlsx"})
-
+    VALID_EXTENSIONS: ClassVar[set] = {".xls", ".xlsx"}
 
 class Application(tk.Frame):
     def __init__(self):
@@ -431,6 +432,7 @@ class Application(tk.Frame):
                 self.button.config(text="Change folder",
                                    command=self.select_directory)
                 self.update_label()
+                self.update_buttons()
                 messagebox.showinfo(
                     "Success", f"{len(self.original_files_list)} files found"
                 )
